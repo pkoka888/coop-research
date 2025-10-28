@@ -17,3 +17,12 @@ Integration
 Pitfalls
 - GPU/CPU resource constraints; versioned models recommended.
 
+Embeddings + Qdrant Pipeline (Local)
+- Pull embedding model: `ollama pull nomic-embed-text`
+- Generate embeddings (example): `type file.txt | ollama run nomic-embed-text > embeds.json`
+- Upsert to Qdrant: use `qdrant-client` (Python) or HTTP API; store `{id, vector, payload:{filepath, sha}}`
+- Index maintenance: run a watcher to re-embed on file change; batch periodically.
+
+Modelfiles
+- Customize prompts or defaults via a `Modelfile`, then `ollama create my-model -f Modelfile`.
+

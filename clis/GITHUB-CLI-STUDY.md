@@ -18,3 +18,9 @@ Integration in COOP
 Pitfalls
 - Requires authentication and scopes; use a fine-grained token in CI where needed.
 
+Advanced Usage
+- Create PR with labels/assignees: `gh pr create -t "Title" -b "Body" -l research -a your-user`
+- Download workflow logs: `gh run list`, `gh run download <run-id>`
+- Issue forms: store under `.github/ISSUE_TEMPLATE/` and reference via `gh issue create --template <name>`
+- Repo variables/secrets: `gh variable set NAME -b "value"`, `gh secret set NAME -b "value"`
+

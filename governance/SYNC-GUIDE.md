@@ -10,6 +10,9 @@ Workflow
    - Requires `gh` authenticated or `git` push permissions.
 4) Propose structure changes via `gh issue create` on the central repo.
 
+Update‑First Policy
+- Before creating new docs, check the remote catalog: `coop:research-check-remote`.
+- Prefer updating existing studies via `coop:research-new-or-update`.
+
 Notes
 - Enforce via settings: `enforceGithubOnly: true` to discourage long-lived local-only research.
-
