@@ -19,5 +19,4 @@ jobs:
             const body = `Please run local COOP research validation and sync scripts:\n\n- Validate: coop:research-validate\n- Sync to central repo: coop:research-sync-gh\n\nThen close this issue.`;
             const { data: issues } = await github.rest.search.issuesAndPullRequests({ q: `repo:${context.repo.owner}/${context.repo.repo} is:issue in:title \"${title}\" state:open` });
             if (issues.total_count > 0) { core.info('Issue already open.'); return; }
-            await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body });
-
+            await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body, assignees: ['pkoka888'], labels: ['research-reminder'] });
