@@ -1,0 +1,23 @@
+name: Monthly Research Reminder
+
+on:
+  schedule:
+    - cron: '0 9 1 * *' # 09:00 UTC on the 1st of each month
+  workflow_dispatch:
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open reminder issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Monthly Research Refresh – Please sync from COOP projects';
+            const body = `Please run local COOP research validation and sync scripts:\n\n- Validate: coop:research-validate\n- Sync to central repo: coop:research-sync-gh\n\nThen close this issue.`;
+            const { data: issues } = await github.rest.search.issuesAndPullRequests({ q: `repo:${context.repo.owner}/${context.repo.repo} is:issue in:title \"${title}\" state:open` });
+            if (issues.total_count > 0) { core.info('Issue already open.'); return; }
+            await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body });
+

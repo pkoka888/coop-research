@@ -1,0 +1,43 @@
+name: Research Structure Lint
+
+on:
+  pull_request:
+    paths:
+      - '**.md'
+      - '.github/workflows/**'
+      - 'clis/**'
+      - 'infrastructure/**'
+      - 'comparison/**'
+      - 'governance/**'
+      - 'workflows/**'
+      - 'templates/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required folders
+        run: |
+          set -e
+          for d in clis infrastructure comparison governance workflows templates; do
+            [ -d "$d" ] || { echo "Missing dir: $d"; exit 1; }
+          done
+      - name: Enforce allowed categories for new/changed files
+        run: |
+          set -e
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "$CHANGED" | while read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              clis/*|infrastructure/*|comparison/*|governance/*|workflows/*|templates/*|.github/workflows/*) : ;; 
+              README.md) : ;;
+              *) echo "Invalid path for research file: $f"; exit 1;;
+            esac
+          done
+      - name: Report success
+        run: echo "Structure OK"
+
